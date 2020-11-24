@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import RNBootSplash from 'react-native-bootsplash';
 
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
@@ -21,7 +22,7 @@ import {
   ProductButton,
 } from './styles';
 
-interface Product {
+export interface Product {
   id: string;
   title: string;
   image_url: string;
@@ -29,21 +30,34 @@ interface Product {
 }
 
 const Dashboard: React.FC = () => {
-  const { addToCart } = useCart();
+  const { addToCart, loaded } = useCart();
 
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      // TODO
+      const { data } = await api.get<Product[]>('/products');
+      setProducts(data);
     }
 
     loadProducts();
   }, []);
 
-  function handleAddToCart(item: Product): void {
-    // TODO
-  }
+  useEffect(() => {
+    loaded && RNBootSplash.hide({ duration: 250 });
+  }, [loaded]);
+
+  const handleAddToCart = useCallback(
+    (item: Omit<Product, 'quantity'>) => {
+      addToCart({
+        id: item.id,
+        title: item.title,
+        image_url: item.image_url,
+        price: item.price,
+      });
+    },
+    [addToCart],
+  );
 
   return (
     <Container>
@@ -65,7 +79,12 @@ const Dashboard: React.FC = () => {
                   testID={`add-to-cart-${item.id}`}
                   onPress={() => handleAddToCart(item)}
                 >
-                  <FeatherIcon size={20} name="plus" color="#C4C4C4" />
+                  <FeatherIcon
+                    size={20}
+                    name="plus"
+                    color="#C4C4C4"
+                    style={{ marginLeft: 5 }}
+                  />
                 </ProductButton>
               </PriceContainer>
             </Product>

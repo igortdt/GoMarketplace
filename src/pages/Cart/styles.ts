@@ -1,14 +1,6 @@
 import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 
-interface Product {
-  id: string;
-  title: string;
-  image_url: string;
-  price: number;
-  quantity: number;
-}
-
 export const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
@@ -21,7 +13,8 @@ export const ProductContainer = styled.View`
   flex-direction: row;
 `;
 
-export const ProductList = styled(FlatList as new () => FlatList<Product>)`
+export const ProductList = styled(FlatList)`
+  flex: 1;
   padding: 0 10px;
 `;
 
@@ -44,7 +37,11 @@ export const ProductTitleContainer = styled.View`
 `;
 
 export const ProductTitle = styled.Text`
-  font-size: 16px;
+  max-width: 120px;
+  font-family: 'Roboto-Regular';
+  line-height: 20px;
+  font-size: 14px;
+  color: #3d3d4d;
 `;
 
 export const ProductPriceContainer = styled.View`
@@ -57,26 +54,28 @@ export const TotalContainer = styled.View`
 `;
 
 export const ProductSinglePrice = styled.Text`
+  font-family: 'Roboto-Regular';
   font-size: 12px;
   color: #a0a0b3;
   margin-top: 8px;
 `;
 
 export const ProductPrice = styled.Text`
-  font-weight: bold;
+  font-family: 'Roboto-Medium';
   margin-top: 5px;
-
   font-size: 16px;
   color: #e83f5b;
+  font-weight: bold;
 `;
 
 export const ProductQuantity = styled.Text`
-  font-weight: bold;
+  font-family: 'Roboto-Medium';
   margin-top: 5px;
   margin-right: 10px;
 
   font-size: 16px;
   color: #e83f5b;
+  font-weight: bold;
 `;
 
 export const ActionContainer = styled.View`
@@ -107,15 +106,17 @@ export const TotalProductsContainer = styled.View`
 `;
 
 export const TotalProductsText = styled.Text`
+  font-family: 'Roboto-Medium';
   font-size: 16px;
   color: #fff;
   margin-left: 15px;
+  font-weight: bold;
 
   flex: 1;
-  font-weight: bold;
 `;
 
 export const SubtotalValue = styled.Text`
+  font-family: 'Roboto-Medium';
   font-size: 16px;
   color: #fff;
   font-weight: bold;
